@@ -1,0 +1,104 @@
+{
+  "name": "halluguard-ai",
+  "displayName": "HalluGuard AI",
+  "description": "Detect, explain, and correct hallucinations in AI-generated code.",
+  "version": "1.0.0",
+  "publisher": "halluguard",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters",
+    "Programming Languages",
+    "Other"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/halluguard/halluguard-ai.git"
+  },
+  "icon": "images/icon.png",
+  "keywords": [
+    "hallucination",
+    "ai",
+    "copilot",
+    "linter",
+    "code-quality",
+    "rwkv"
+  ],
+  "activationEvents": [
+    "onLanguage:python",
+    "onLanguage:javascript",
+    "onLanguage:typescript"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "halluguard.analyze",
+        "title": "HalluGuard: Analyze Current File"
+      },
+      {
+        "command": "halluguard.showReport",
+        "title": "HalluGuard: Show Full Report"
+      }
+    ],
+    "configuration": {
+      "title": "HalluGuard AI",
+      "properties": {
+        "halluguard.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or disable HalluGuard analysis."
+        },
+        "halluguard.serverPort": {
+          "type": "number",
+          "default": 7432,
+          "description": "Port for the HalluGuard analysis server."
+        },
+        "halluguard.modelPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to a local RWKV model file (.pth). Passed to the analysis server as HALLUGUARD_RWKV_MODEL; leave empty to run without RWKV."
+        },
+        "halluguard.sensitivity": {
+          "type": "string",
+          "default": "MEDIUM",
+          "enum": [
+            "LOW",
+            "MEDIUM",
+            "HIGH"
+          ],
+          "description": "Minimum severity displayed: LOW shows every finding, MEDIUM (default) hides LOW notes, HIGH keeps only HIGH/CRITICAL."
+        },
+        "halluguard.pythonPath": {
+          "type": "string",
+          "default": "python",
+          "description": "Path to the Python interpreter used to start the analysis server."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^2.22.0",
+    "glob": "^13.0.6",
+    "mocha": "^7.2.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  }
+}

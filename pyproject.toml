@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "halluguard-ai"
+version = "1.0.0"
+description = "Detect, explain, and correct hallucinations in AI-generated code."
+readme = "README.md"
+authors = [{name = "HalluGuard contributors"}]
+license = {text = "MIT"}
+requires-python = ">=3.11"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "tree-sitter>=0.23.0",
+    "tree-sitter-python>=0.23.0",
+    "tree-sitter-javascript>=0.23.0",
+    "tree-sitter-typescript>=0.23.0",
+    "requests>=2.31.0",
+]
+
+[project.optional-dependencies]
+api = [
+    "fastapi>=0.110.0",
+    "uvicorn>=0.29.0",
+]
+rwkv = [
+    "rwkv>=0.8.26",
+]
+dev = [
+    "pytest>=8.0.0",
+    "httpx>=0.27.0",
+    "mypy>=1.9.0",
+    "ruff>=0.3.4",
+    "black>=24.3.0",
+    "pre-commit>=3.6.0",
+    "types-requests>=2.31.0",
+    "fastapi>=0.110.0",
+    "uvicorn>=0.29.0",
+]
+
+[project.scripts]
+halluguard = "cli.analyzer:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["api*", "cli*", "core*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["network: uses the real PyPI/npm registries (needs HALLUGUARD_TEST_NETWORK=1)"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["tests/fixtures", "examples", "vscode-extension", "github-action"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
